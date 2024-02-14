@@ -6,6 +6,8 @@ This is a simulated platformed designed for receptionists working in a hospital 
 - Patient Management: The website displays associated patients based on the logged-in receptionist, allowing for easy access to patient records and information. Receptionists can create new patient accounts and manage existing records easily.
 - Scheduling Tools: Receptionists have access to tools for appointments and procedures for effective scheduling.
 
+## Demonstration
+
 A demonstration of this website can be found [here](https://web.njit.edu/~jm2375/Portfolio/HospitalReceptionist/home.html). Below is a list of 3 sample accounts you may access to test the website's features:
 
 | First Name | Last Name | Password    | Receptionist ID | Phone         | Email                 |

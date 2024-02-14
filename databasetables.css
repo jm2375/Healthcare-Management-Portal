@@ -1,0 +1,23 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+    background-image: url('hospital.jpg');
+    border: 1px solid black;
+    margin: 0;
+    padding: 0;
+}
+
+table{
+    border: white;
+    background-color: rgba(148, 148, 148, 0.90);
+    width: 100%;
+    border-radius: 10px;
+    border-collapse: collapse;
+    filter: drop-shadow(20px 10px 1px rgba(0, 0, 0, 0.85));
+}
+  
+th, td{
+    padding: 8px;
+    border: 1px solid black;
+    text-align: center;
+}

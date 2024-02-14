@@ -1,0 +1,340 @@
+<head>
+    <title>House of Health</title>
+    <link rel="stylesheet" type="text/css" href="houseofhealth.css">
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th>House of Health</th>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="firstName">Receptionist's First Name:</label>
+                <p><input type="text" placeholder="Enter First Name" id="firstName" name="firstName"><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="lastName">Receptionist's Last Name:</label>
+                <p><input type="text" placeholder="Enter Last Name" id="lastName" name="lastName"><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="password">Receptionist's Password:</label>
+                <p><input type="password" placeholder="Enter Password" id="password" name="password"><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="id">Receptionist's ID #:</label>
+                <p><input type="text" placeholder="Enter ID #" id="id" name="id"><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="phoneNumber">Receptionist's Phone #:</label>
+                <p><input type="text" placeholder="Enter Phone #" id="phoneNumber" name="phoneNumber"><strong style="color: rgb(200, 0, 0)">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr id="emailContainer" style="display: none;">
+            <td>
+                <label for="email">Receptionist's Email:</label>
+                <p><input type="text" placeholder="Enter Email Address" id="email" name="email" readonly><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="emailConfirmation">Send an Email Confirmation?</label>
+                <span class="checkbox"><input type="checkbox" id="emailConfirmation" name="emailConfirmation" onclick="toggleEmail()">
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="transactionType">Transaction Type:</label> 
+                <select id="transactionType" name="transactionType">
+                    <option value="Search a Receptionist`s Account">Search a Receptionist`s Account</option>
+                    <option value="Update a Patient`s Record">Update a Patient`s Record</option>
+                    <option value="Schedule an Appointment">Schedule an Appointment</option>
+                    <option value="Cancel an Appointment">Cancel an Appointment</option>
+                    <option value="Schedule a Procedure">Schedule a Procedure</option>
+                    <option value="Cancel a Procedure">Cancel a Procedure</option>
+                    <option value="Create a New Patient Account">Create a New Patient Account</option>
+                </select>
+                <strong style="color: rgb(200, 0, 0);">(Required)</strong>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <button class="submit" type="button" onclick="validate()">Submit</button>
+                <button class="reset" type="button" onclick="reset()">Reset</button>
+            </td>
+        </tr>
+    </table>
+</body>
+
+<script>
+    function toggleEmail(){
+        if(emailConfirmation.checked){
+            email.removeAttribute("readonly");
+            emailContainer.style.display = "table-row";
+        } 
+        else{
+            email.value = "";
+            email.setAttribute("readonly", true);
+            emailContainer.style.display = "none";
+        }
+    }
+
+    function reset(){
+        document.getElementById("firstName").value = "";
+        document.getElementById("lastName").value = "";
+        document.getElementById("password").value = "";
+        document.getElementById("id").value = "";
+        document.getElementById("phoneNumber").value = "";
+        document.getElementById("emailConfirmation").checked = false;
+        document.getElementById("transactionType").selectedIndex = 0;
+        toggleEmail();
+    }
+
+    function validate(){
+        let validationFailed = false;
+        let errorMessage = "";
+        let fieldError = "";
+
+        const firstName = document.getElementById("firstName").value.toLowerCase();
+        const lastName = document.getElementById("lastName").value.toLowerCase();
+        const password = document.getElementById("password").value;
+        const id = document.getElementById("id").value;
+        const phoneNumber = document.getElementById("phoneNumber").value.replace(/ /g, '').replace(/-/g, '');
+        const email = document.getElementById("email").value;
+        const emailConfirmation = document.getElementById("emailConfirmation").checked;
+        const transactionType = document.getElementById("transactionType").value;
+
+        if(!/^[A-Za-z]+$/.test(firstName)){
+            errorMessage = "First name must only include alphabetical characters.";
+            validationFailed = true;
+            fieldError = "firstName";
+        }
+        if(/^\s*$/.test(firstName)){
+            errorMessage = "First name is blank.";
+            validationFailed = true;
+            fieldError = "firstName";
+        }
+
+        if(validationFailed){
+            alert(errorMessage);
+            document.getElementById(fieldError).focus();
+            return;
+        }
+
+        if(!/^[A-Za-z]+$/.test(lastName)){
+            errorMessage = "Last name must only include alphabetical characters.";
+            validationFailed = true;
+            fieldError = "lastName";
+        }
+        if(/^\s*$/.test(lastName)){
+            errorMessage = "Last name is blank.";
+            validationFailed = true;
+            fieldError = "lastName";
+        }
+        
+        if(validationFailed){
+            alert(errorMessage);
+            document.getElementById(fieldError).focus();
+            return;
+        }
+
+        if(!/^.{1,16}$/.test(password)){
+            errorMessage = "Password must be 16 characters in length or less.";
+            validationFailed = true;
+            fieldError = "password";
+        }
+        if(!/\W/.test(password)){
+            errorMessage = "Password must contain at least one special character.";
+            validationFailed = true;
+            fieldError = "password";
+        }
+        if(!/(?=.*\d)/.test(password)){
+            errorMessage = "Password must contain at least one digit.";
+            validationFailed = true;
+            fieldError = "password";
+        }
+        if(!/(?=.*[a-z])/.test(password)){
+            errorMessage = "Password must contain at least one lowercase letter.";
+            validationFailed = true;
+            fieldError = "password";
+        }
+        if(!/(?=.*[A-Z])/.test(password)){
+            errorMessage = "Password must contain at least one uppercase letter.";
+            validationFailed = true;
+            fieldError = "password";
+        }
+        if(/^\s*$/.test(password)){
+            errorMessage = "Password is blank.";
+            validationFailed = true;
+            fieldError = "password";
+        } 
+
+        if(validationFailed){
+            alert(errorMessage);
+            document.getElementById(fieldError).focus();
+            return;
+        }
+
+        if(!/^\d{4}$/.test(id)){
+            errorMessage = "ID # must be 4 characters long.";
+            validationFailed = true;
+            fieldError = "id";
+        }
+        if(!/^\d+$/.test(id)){
+            errorMessage = "ID # must only contain digits.";
+            validationFailed = true;
+            fieldError = "id";
+        }
+        if(/^\s*$/.test(id)){
+            errorMessage = "ID # is blank.";
+            validationFailed = true;
+            fieldError = "id";
+        }
+
+        if(validationFailed){
+            alert(errorMessage);
+            document.getElementById(fieldError).focus();
+            return;
+        }
+
+        if(!/^\d{10}$/.test(phoneNumber)){
+            errorMessage = "Phone number must contain 10 digits.";
+            validationFailed = true;
+            fieldError = "phoneNumber";
+        }
+        if(!/^[0-9\s-]*$/.test(phoneNumber)){
+            errorMessage = "Phone number must only contain digits, spaces, or dashes.";
+            validationFailed = true;
+            fieldError = "phoneNumber";
+        }
+        if(/^\s*$/.test(phoneNumber)){
+            errorMessage = "Phone number is blank.";
+            validationFailed = true;
+            fieldError = "phoneNumber";
+        }
+
+        if(validationFailed){
+            alert(errorMessage);
+            document.getElementById(fieldError).focus();
+            return;
+        }
+
+        if(emailConfirmation){
+            if(!/.+\.[A-Za-z]{3,5}$/.test(email)){
+                errorMessage = "Email must have 3-5 characters after the period.";
+                validationFailed = true;
+                fieldError = "email";
+            }
+            if(!/@.+?\./.test(email)){
+                errorMessage = "Email must have at least 1 character between @ symbol and the period.";
+                validationFailed = true;
+                fieldError = "email";
+            }
+            if(!/.+@/.test(email)){
+                errorMessage = "Email must have at least 1 character before the @ symbol.";
+                validationFailed = true;
+                fieldError = "email";
+            }
+            if(/^\s*$/.test(email)){
+                errorMessage = "Email is blank.";
+                validationFailed = true;
+                fieldError = "email";
+            } 
+        }
+
+        if(validationFailed){
+            alert(errorMessage);
+            document.getElementById(fieldError).focus();
+        } 
+        else{
+            verify(firstName, lastName, password, id, phoneNumber, email, emailConfirmation, transactionType);
+        }
+    }
+
+    function verify(firstName, lastName, password, id, phoneNumber, email, emailConfirmation, transactionType) {
+        let accountFound = true;
+        verifySQL(firstName, lastName, password, id, phoneNumber, email, emailConfirmation, transactionType, accountFound);
+    }
+
+    function verifySQL(firstName, lastName, password, id, phoneNumber, email, emailConfirmation, transactionType, accountFound) {
+        let formData = new FormData();
+        formData.append("firstName", firstName);
+        formData.append("lastName", lastName);
+        formData.append("password", password);
+        formData.append("id", id);
+        formData.append("phoneNumber", phoneNumber);
+        formData.append("email", email);
+        formData.append("emailConfirmation", emailConfirmation);
+        formData.append("transactionType", transactionType);
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "verifyLogin.php", true);
+        xhr.onload = () => {
+            if(xhr.status === 200){
+                const response = xhr.responseText;
+                if(response === "true" && accountFound){
+                    sessionStorage.setItem("receptionistID", id);
+                    alert(`Welcome, ${firstName.charAt(0).toUpperCase() + firstName.slice(1)} ${lastName.charAt(0).toUpperCase() + lastName.slice(1)}! You have successfully logged into the system.\nTransaction Type Selected: ${transactionType}`);
+                    redirect(transactionType, id);
+                }
+                else{
+                    alert(`Account not found for ${firstName.charAt(0).toUpperCase() + firstName.slice(1)} ${lastName.charAt(0).toUpperCase() + lastName.slice(1)}.`);
+                }
+            }
+            else{
+                alert("Error occurred during verification.");
+            }
+        };
+        
+        xhr.send(formData);
+    }
+
+    function redirect(transactionType, id){
+        let url = "";
+        switch(transactionType){
+            case "Search a Receptionist`s Account":
+                url = "searchReceptionistAccount.html";
+                break;
+            case "Update a Patient`s Record":
+                url = "updatePatientRecord.html";
+                break;
+            case "Schedule an Appointment":
+                url = "verifyPatient.html";
+                break;
+            case "Cancel an Appointment":
+                url = "cancelAppointment.html";
+                break;
+            case "Schedule a Procedure":
+                url = "scheduleProcedure.html";
+                break;
+            case "Cancel a Procedure":
+                url = "cancelProcedure.html";
+                break;
+            case "Create a New Patient Account":
+                url = "createPatient.html";
+                break;
+            default:
+                alert("Invalid transaction type selected.");
+                return;
+        }
+
+        window.location.href = url;
+    }
+</script>

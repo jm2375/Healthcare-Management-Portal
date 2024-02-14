@@ -1,0 +1,173 @@
+<style>
+    #navbar{
+        background-color: #333;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    #navbar ul{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #navbar li{
+        float: left;
+    }
+
+    #navbar li a{
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    #navbar li a:hover{
+        background-color: #ddd;
+        color: black;
+    }
+</style>
+
+<head>
+    <title>Schedule an Appointment</title>
+    <link rel="stylesheet" type="text/css" href="houseofhealth.css">
+    <div id="navbar">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="searchReceptionistAccount.html">Search Receptionist's Account</a></li>
+            <li><a href="updatePatientRecord.html">Update Patient's Record</a></li>
+            <li><a href="verifyPatient.html">Schedule an Appointment</a></li>
+            <li><a href="cancelAppointment.html">Cancel an Appointment</a></li>
+            <li><a href="scheduleProcedure.html">Schedule a Procedure</a></li>
+            <li><a href="cancelProcedure.html">Cancel a Procedure</a></li>
+            <li><a href="createPatient.html">Create a New Patient Account</a></li>
+        </ul>
+    </div>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th>Schedule an Appointment</th>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="appointmentDate">Appointment Date:</label>
+                <p><input type="date" id="appointmentDate" name="appointmentDate" required><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="appointmentType">Appointment Type:</label>
+                <p><input type="text" id="appointmentType" name="appointmentType" placeholder="Example: Well Visit" required><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="doctorID">Doctor ID:</label>
+                <p><input type="number" id="doctorID" name="doctorID" placeholder="Example: 1" required><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <button class="submit" type="button" onclick="scheduleAppointment()">Submit</button>
+                <button class="reset" type="button" onclick="reset()">Reset</button>
+            </td>
+        </tr>
+    </table>
+</body>
+
+<script>
+    function scheduleAppointment(){
+        const appointmentDateInput = document.getElementById("appointmentDate");
+        const appointmentTypeInput = document.getElementById("appointmentType");
+        const doctorIDInput = document.getElementById("doctorID");
+        const patientID = sessionStorage.getItem("patientID");
+        const receptionistID = sessionStorage.getItem("receptionistID");
+
+        if(!patientID){
+            alert("Missing Patient ID. Please submit relevant form.");
+            return;
+        }
+        if(!receptionistID){
+            alert("Missing Receptionist ID. Please submit relevant form.");
+            return;
+        }
+        if(!appointmentDateInput.value){
+            alert("Appointment Date is required.");
+            appointmentDateInput.focus();
+            return;
+        }
+        if(!appointmentTypeInput.value){
+            alert("Appointment Type is required.");
+            appointmentTypeInput.focus();
+            return;
+        }
+        if(!doctorIDInput.value){
+            alert("Appointment Date is required.");
+            doctorIDInput.focus();
+            return;
+        }
+
+        const confirmSchedule = confirm("You are about to schedule an appointment. Are you sure you want to do so?");
+        let procedureCheck = false;
+        if(confirmSchedule){
+            const confirmProcedure = confirm("Is there a procedure needed for this appointment?");
+            
+            if(confirmProcedure){
+                procedureCheck = true;
+            }
+            else{
+                procedureCheck = false;
+            }
+        } 
+        else{
+            return;
+        }
+
+        const appointmentDate = document.getElementById("appointmentDate").value;
+        const appointmentType = document.getElementById("appointmentType").value;
+        const doctorID = document.getElementById("doctorID").value;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'scheduleAppointment.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = () => {
+            const response = xhr.responseText;
+            if(xhr.status === 200){
+                if(response === "No doctor found with the given Doctor ID."){
+                    alert(response);
+                }
+                else if(response === "Error occured."){
+                    alert(response);
+                }
+                else if(response.startsWith("Appointment confirmed.")){
+                    if(procedureCheck){
+                        alert(response + "\nProceeding to Schedule a Procedure Form");
+                        window.location.href = "scheduleProcedure.html";
+                    }
+                    else{
+                        alert(response);
+                    }
+                }
+            }
+            
+            else{
+                alert("Error occurred");
+            }
+        };
+
+        xhr.send(`appointmentDate=${encodeURIComponent(appointmentDate)}&appointmentType=${encodeURIComponent(appointmentType)}&doctorID=${encodeURIComponent(doctorID)}&patientID=${encodeURIComponent(patientID)}&receptionistID=${encodeURIComponent(receptionistID)}`);
+    }
+
+    function reset(){
+        document.getElementById("appointmentDate").value = "";
+        document.getElementById("appointmentType").value = "";
+        document.getElementById("doctorID").value = "";
+    }
+</script>

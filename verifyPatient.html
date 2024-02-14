@@ -1,0 +1,148 @@
+<style>
+    #navbar{
+        background-color: #333;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    #navbar ul{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #navbar li{
+        float: left;
+    }
+
+    #navbar li a{
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    #navbar li a:hover{
+        background-color: #ddd;
+        color: black;
+    }
+</style>
+
+<head>
+    <title>Verify Patient Account</title>
+    <link rel="stylesheet" type="text/css" href="houseofhealth.css">
+    <div id="navbar">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="searchReceptionistAccount.html">Search Receptionist's Account</a></li>
+            <li><a href="updatePatientRecord.html">Update Patient's Record</a></li>
+            <li><a href="verifyPatient.html">Schedule an Appointment</a></li>
+            <li><a href="cancelAppointment.html">Cancel an Appointment</a></li>
+            <li><a href="scheduleProcedure.html">Schedule a Procedure</a></li>
+            <li><a href="cancelProcedure.html">Cancel a Procedure</a></li>
+            <li><a href="createPatient.html">Create a New Patient Account</a></li>
+        </ul>
+    </div>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th>Verify Patient Account</th>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="firstName">First Name:</label>
+                <p><input type="text" placeholder="Example: John" id="firstName" name="firstName"><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="lastName">Last Name:</label>
+                <p><input type="text" placeholder="Example: Doe" id="lastName" name="lastName"><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="patientID">Patient ID:</label>
+                <p><input type="text" placeholder="Example: 1111" id="patientID" name="patientID"><strong style="color: rgb(200, 0, 0);">(Required)</strong></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <button class="submit" type="button" onclick="verify()">Submit</button>
+                <button class="reset" type="button" onclick="reset()">Reset</button>
+            </td>
+        </tr>
+    </table>
+</body>
+
+<script>
+    window.onload = () => {
+        sessionStorage.removeItem(patientID);
+    }
+
+    function verify(){
+        const firstNameInput = document.getElementById("firstName");
+        const lastNameInput = document.getElementById("lastName");
+        const patientIDInput = document.getElementById("patientID");
+
+        if(!patientIDInput.value){
+            alert("Patient ID is required.");
+            patientIDInput.focus();
+            return;
+        }
+        if(!firstNameInput.value){
+            alert("First Name is required.");
+            firstNameInput.focus();
+            return;
+        }
+        if(!lastNameInput.value){
+            alert("Last Name is required.");
+            lastNameInput.focus();
+            return;
+        }
+
+        const firstName = formatName(firstNameInput.value);
+        const lastName = formatName(lastNameInput.value);
+        const patientID = patientIDInput.value;
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "verifyPatient.php", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = () => {
+            if(xhr.status === 200){
+                let response = xhr.responseText.trim();
+                if(response === "false"){
+                    alert("Patient not found. Please create an account.");
+                    window.location.href = "createPatient.html";
+                }
+                else{
+                    alert("Patient verified. Redirecting to appointment scheduling.");
+                    sessionStorage.setItem("patientID", patientID);
+                    window.location.href = "scheduleAppointment.html";
+                }
+            }
+            else{
+                alert("Error occurred.");
+            }
+        };
+
+        xhr.send(`firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}&patientID=${encodeURIComponent(patientID)}`);
+    }
+
+    function resetForm(){
+        document.getElementById("firstName").value = "";
+        document.getElementById("lastName").value = "";
+        document.getElementById("patientID").value = "";
+    }
+
+    function formatName(name){
+        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    }
+</script>

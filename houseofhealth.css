@@ -1,0 +1,69 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+    background-image: url('hospital.jpg');
+}
+
+th{
+    font-size: 30pt;
+}
+
+td{
+    padding: 10px;
+    font-size: 15pt;
+}
+
+td input{
+    font-size: 14pt;
+    width: 50%;
+    border-radius: 5px;
+}
+
+select{
+    width: 35%;
+    font-size: 13pt;
+    border-radius: 5px;
+}
+
+.checkbox{
+    margin-left: -25%;
+}
+
+table{
+    border: white;
+    background-color: rgba(148, 148, 148, 0.90);
+    width: 40%;
+    margin: 0 auto;
+    margin-top: 5%;
+    border-radius: 10px;
+    filter: drop-shadow(20px 10px 1px rgba(0, 0, 0, 0.85));
+}
+
+.submit{
+    margin: 0 auto;
+    font-size: 16pt;
+    font-weight: 600;
+    padding: 10px 14px;
+    background-color: lightgreen;
+    border-color: white;
+    border-radius: 10px;
+    color: black;
+    display: block;
+}
+
+.reset{
+    margin: 0 auto;
+    font-size: 16pt;
+    font-weight: 600;
+    padding: 10px 20px;
+    background-color: lightcoral;
+    border-color: white;
+    border-radius: 10px;
+    color: black;
+    display: block;
+}
+
+button:hover{
+    background-color: white;
+    color: black;
+}

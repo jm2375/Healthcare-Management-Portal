@@ -1,5 +1,5 @@
 # Hospital-Receptionist-Website
-This is a simulated platformed designed for receptionists working in a hospital setting. It implements all aspects of web development to create real-world applicable tools.
+This is a simulated platform designed for receptionists working in a hospital setting. It implements all aspects of web development to create real-world applicable tools.
 
 ## Key Features
 - Login Systems: Receptionists can securely login to the website by verifying their account information against an SQL database.

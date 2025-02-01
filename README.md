@@ -1,4 +1,4 @@
-# Hospital-Receptionist-Website
+# Healthcare-Management-Portal
 This is a simulated platform designed for receptionists working in a hospital setting. It implements all aspects of web development to create real-world applicable tools.
 
 ## Key Features

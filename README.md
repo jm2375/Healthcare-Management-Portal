@@ -1,7 +1,9 @@
-# Healthcare-Management-Portal
+# Healthcare Management Portal
+
 This is a simulated platform designed for receptionists working in a hospital setting. It implements all aspects of web development to create real-world applicable tools.
 
-## Key Features
+## Features
+
 - Login Systems: Receptionists can securely login to the website by verifying their account information against an SQL database.
 - Patient Management: The website displays associated patients based on the logged-in receptionist, allowing for easy access to patient records and information. Receptionists can create new patient accounts and manage existing records easily.
 - Scheduling Tools: Receptionists have access to tools for appointments and procedures for effective scheduling.
